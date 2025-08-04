@@ -982,11 +982,19 @@ app.get('/api/health', async (req, res) => {
 
 // For Vercel deployment, export the app instead of listening
 if (!isVercel) {
-  const PORT = process.env.PORT || 3001;
-  const HOST = process.env.HOST || '0.0.0.0'; // Listen on all interfaces
-  server.listen(PORT, HOST, () => {
-    console.log(`Server running on http://${HOST}:${PORT}`);
-  });
+  const PORT = process.env.PORT || 10000; // Render uses port 10000 by default
+  const HOST = '0.0.0.0'; // Always bind to all interfaces for Render
+  
+  if (server) {
+    server.listen(PORT, HOST, () => {
+      console.log(`Server running on http://${HOST}:${PORT}`);
+    });
+  } else {
+    // For environments without Socket.IO
+    app.listen(PORT, HOST, () => {
+      console.log(`Server running on http://${HOST}:${PORT}`);
+    });
+  }
 }
 
 // Export for Vercel
