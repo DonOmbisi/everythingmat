@@ -1,0 +1,23 @@
+services:
+  # Frontend (Static Site)
+  - type: web
+    name: everythingmat-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend (Web Service)  
+  - type: web
+    name: everythingmat-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
