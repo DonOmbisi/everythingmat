@@ -25,8 +25,9 @@ const expressWinston = require('express-winston');
 const Sentry = require('@sentry/node');
 require('dotenv').config();
 
-// Vercel compatibility
+// Platform compatibility
 const isVercel = process.env.VERCEL === '1';
+const isRender = process.env.RENDER === 'true';
 // Initialize Sentry
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
