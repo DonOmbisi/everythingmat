@@ -10,7 +10,9 @@ export default defineConfig({
   server: {
     host: true, // This enables --host functionality
     proxy: {
-      '/api': 'http://localhost:3001',
+      '/api': process.env.NODE_ENV === 'production' 
+        ? 'https://everythingmat.onrender.com'
+        : 'http://localhost:3001',
     },
     watch: {
       usePolling: true,
