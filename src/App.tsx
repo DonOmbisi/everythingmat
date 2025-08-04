@@ -24,7 +24,10 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 
 function App() {
   useEffect(() => {
-    fetch('http://localhost:3001/api/visits', { method: 'POST' });
+    const API_BASE_URL = process.env.NODE_ENV === 'production' 
+      ? process.env.VITE_API_URL || 'https://everythingmat.onrender.com/api' 
+      : '/api';
+    fetch(`${API_BASE_URL}/visits`, { method: 'POST' });
   }, []);
   return (
     <AuthProvider>

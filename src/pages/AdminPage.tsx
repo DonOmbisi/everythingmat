@@ -749,7 +749,10 @@ const AnalyticsDashboard: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    let url = 'http://localhost:3001/api/sales/analytics';
+    const API_BASE_URL = process.env.NODE_ENV === 'production' 
+      ? process.env.VITE_API_URL || 'https://everythingmat.onrender.com/api' 
+      : '/api';
+    let url = `${API_BASE_URL}/sales/analytics`;
     if (startDate && endDate) {
       url += `?startDate=${startDate}&endDate=${endDate}`;
     }
@@ -760,7 +763,7 @@ const AnalyticsDashboard: React.FC = () => {
         setLoading(false);
       });
     // Fetch site visits for conversion rate
-    let visitsUrl = 'http://localhost:3001/api/visits/count';
+    let visitsUrl = `${API_BASE_URL}/visits/count`;
     if (startDate && endDate) {
       visitsUrl += `?startDate=${startDate}&endDate=${endDate}`;
     }
@@ -1512,7 +1515,11 @@ const AdminOrdersPage: React.FC = () => {
       headers['Authorization'] = `Bearer ${token}`;
     }
     
-    fetch('http://localhost:3001/api/orders', { headers })
+    const API_BASE_URL = process.env.NODE_ENV === 'production' 
+      ? process.env.VITE_API_URL || 'https://everythingmat.onrender.com/api' 
+      : '/api';
+    
+    fetch(`${API_BASE_URL}/orders`, { headers })
       .then(async res => {
         if (!res.ok) {
           if (res.status === 401) {
@@ -1541,7 +1548,11 @@ const AdminOrdersPage: React.FC = () => {
       headers['Authorization'] = `Bearer ${token}`;
     }
     
-    await fetch(`http://localhost:3001/api/orders/${orderId}`, {
+    const API_BASE_URL = process.env.NODE_ENV === 'production' 
+      ? process.env.VITE_API_URL || 'https://everythingmat.onrender.com/api' 
+      : '/api';
+    
+    await fetch(`${API_BASE_URL}/orders/${orderId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ status: newStatus })
