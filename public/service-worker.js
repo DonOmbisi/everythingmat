@@ -10,17 +10,34 @@ const IMAGE_ASSETS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([
+    caches.open(CACHE_NAME).then(async (cache) => {
+      // Essential files that must be cached
+      const essentialFiles = [
         '/',
         '/index.html',
-        OFFLINE_URL,
+        OFFLINE_URL
+      ];
+      
+      // Try to cache essential files
+      try {
+        await cache.addAll(essentialFiles);
+      } catch (error) {
+        console.log('Failed to cache essential files:', error);
+      }
+      
+      // Try to cache optional files individually
+      const optionalFiles = [
         '/vite.svg',
-        ...IMAGE_ASSETS,
-        // Add CSS/JS bundles (Vite outputs to /assets)
-        '/assets/index.css',
-        '/assets/index.js',
-      ]);
+        ...IMAGE_ASSETS
+      ];
+      
+      for (const file of optionalFiles) {
+        try {
+          await cache.add(file);
+        } catch (error) {
+          console.log(`Failed to cache ${file}:`, error);
+        }
+      }
     })
   );
   self.skipWaiting();

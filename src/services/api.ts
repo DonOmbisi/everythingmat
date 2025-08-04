@@ -1,5 +1,5 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? process.env.VITE_API_URL || '/api' 
+  ? process.env.VITE_API_URL || 'https://everythingmat.onrender.com/api' 
   : '/api';
 
 // Helper function to handle API responses
